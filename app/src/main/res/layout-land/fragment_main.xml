@@ -35,7 +35,7 @@
         android:id="@+id/userNameBox"
         android:layout_below="@id/fakeView"
         android:layout_alignRight="@id/fakeView"
-        android:hint="Account name"
+        android:hint="@string/account_name"
         android:lines="1"
         android:maxLines="1"
         android:singleLine="true" />
@@ -48,7 +48,7 @@
         android:id="@+id/passwordBox"
         android:layout_below="@id/fakeView"
         android:layout_alignLeft="@id/fakeView"
-        android:hint="********"
+        android:hint="@string/account_password"
         android:lines="1"
         android:maxLines="1"
         android:singleLine="true"/>
@@ -67,20 +67,20 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WoTLK"
+            android:text="@string/wotlk"
             android:id="@+id/wotlkButton"
             android:checked="true" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cataclysm"
+            android:text="@string/cataclysm"
             android:id="@+id/cataclysmButton" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Retail"
+            android:text="@string/retail"
             android:id="@+id/retailButton"
             android:visibility="gone"/> <!-- Temporarily disabled because no impl -->
     </RadioGroup>
@@ -88,9 +88,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Connect"
+        android:text="@string/connect"
         android:id="@+id/connectButton"
-        android:layout_below="@+id/radioGroup"
+        android:layout_below="@id/radioGroup"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -103,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/authProgressBar"
-        android:layout_below="@+id/connectButton"
+        android:layout_below="@id/connectButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/authProgressInfo"
-        android:layout_below="@+id/authProgressBar"
+        android:layout_below="@id/authProgressBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp" />
@@ -121,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/textView"
-        android:layout_below="@+id/authProgressInfo"
+        android:layout_below="@id/authProgressInfo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="4dp"
@@ -129,6 +129,6 @@
         android:inputType="none"
         android:textAlignment="center"
         android:gravity="center_horizontal"
-        android:text="This application allows you to connect to 3.3.5 and 4.3.4 servers. If an email is provided as an username while trying to connect to a 4.3.4 server, Battle.NET connexion will be attempted.\n\nVisit https://github.com/Warpten/wandrowid for more informations."
+        android:text="@string/about"
         android:linksClickable="true"/>
 </RelativeLayout>
