@@ -8,6 +8,7 @@ import com.commonsware.cwac.pager.PageDescriptor;
 import com.commonsware.cwac.pager.v4.ArrayPagerAdapter;
 
 import org.warpten.wandrowid.G;
+import org.warpten.wandrowid.R;
 
 import java.util.ArrayList;
 
@@ -85,7 +86,7 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
                 HandleIncomingPacket(data); // Update again
                 break;
             case ChatMessageType.Guild:
-                AddPage(messageType, "Guild");
+                AddPage(messageType, G.GetLocalizedString(R.string.channel_guild));
                 HandleIncomingPacket(data); // Update again
                 break;
         }

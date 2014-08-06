@@ -79,6 +79,9 @@ public class ChatPagerFragment extends Fragment {
             case ChatMessageType.Whisper:
                 handlers.SendMessageChat(ChatMessageType.Whisper, frameName, message);
                 return true;
+            case ChatMessageType.Say:
+                handlers.SendMessageChat(ChatMessageType.Say, message);
+                return true;
             default:
                 return false;
         }
@@ -90,6 +93,6 @@ public class ChatPagerFragment extends Fragment {
     }
     public void OpenLocalChat()
     {
-        mAdapter.AddPage(ChatMessageType.Say, "Local chat");
+        mAdapter.AddPage(ChatMessageType.Say, G.GetLocalizedString(R.string.channel_local));
     }
 }

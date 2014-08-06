@@ -44,6 +44,12 @@
             android:title="Dump packets"
             android:defaultValue="false" />
 
+        <CheckBoxPreference
+            android:key="logcat_logging"
+            android:summary="Disabling might improve performance."
+            android:title="Logcat logging"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,5 +1,6 @@
 package org.warpten.wandrowid.fragments;
 
+import org.warpten.wandrowid.G;
 import org.warpten.wandrowid.R;
 
 public class CharEnumStruct {
@@ -80,64 +81,42 @@ public class CharEnumStruct {
 
     public String GetDescription(int index)
     {
-        return "Level " + CharLevels[index] + " "
-                + GetRaceName(CharRaces[index]) + " "
-                + GetClassName(CharClasses[index]);
+        return String.format(G.GetLocalizedString(R.string.char_enum_info_text),
+            CharLevels[index], GetRaceName(CharRaces[index]), GetClassName(CharClasses[index]));
     }
 
     private static String GetClassName(int race) {
         switch (race) {
-            case 1: // Warrior
-                return "Warrior";
-            case 2: // Paladin
-                return "Paladin";
-            case 3: // Hunter
-                return "Hunter";
-            case 4: // Rogue
-                return "Rogue";
-            case 5: // Priest
-                return "Priest";
-            case 6: // DeathKnight
-                return "Death Knight";
-            case 7: // Shaman
-                return "Shaman";
-            case 8: // Mage
-                return "Mage";
-            case 9: // Warlock
-                return "Warlock";
-            case 11: // Druid
-                return "Druid";
+            case 1: return G.GetLocalizedString(R.string.warrior);
+            case 2: return G.GetLocalizedString(R.string.paladin);
+            case 3: return G.GetLocalizedString(R.string.hunter);
+            case 4: return G.GetLocalizedString(R.string.rogue);
+            case 5: return G.GetLocalizedString(R.string.priest);
+            case 6: return G.GetLocalizedString(R.string.deathknight);
+            case 7: return G.GetLocalizedString(R.string.shaman);
+            case 8: return G.GetLocalizedString(R.string.mage);
+            case 9: return G.GetLocalizedString(R.string.warlock);
+            case 11: return G.GetLocalizedString(R.string.druid);
             default: // Should never happen
                 return "0xB16B00B5";
         }
     }
 
+    // TODO: account for locales (Humain / Humaine, ffs)
     private static String GetRaceName(int race) {
         switch (race) {
-            case 1: // Human
-                return "Human";
-            case 2: // Orc
-                return "Orc";
-            case 3: // Dwarf
-                return "Dwarf";
-            case 4: // Nightelf
-                return "Nightelf";
-            case 5: // Undead
-                return "Undead";
-            case 6: // Tauren
-                return "Tauren";
-            case 7: // Gnome
-                return "Gnome";
-            case 8: // Troll
-                return "Troll";
-            case 9: // Goblin
-                return "Goblin";
-            case 10: // Bloodelf
-                return "Bloodelf";
-            case 11: // Draenei
-                return "Draenei";
-            case 22: // Worgen
-                return "Worgen";
+            case 1: return G.GetLocalizedString(R.string.human);
+            case 2: return G.GetLocalizedString(R.string.orc);
+            case 3: return G.GetLocalizedString(R.string.dwarf);
+            case 4: return G.GetLocalizedString(R.string.nightelf);
+            case 5: return G.GetLocalizedString(R.string.undead);
+            case 6: return G.GetLocalizedString(R.string.tauren);
+            case 7: return G.GetLocalizedString(R.string.gnome);
+            case 8: return G.GetLocalizedString(R.string.troll);
+            case 9: return G.GetLocalizedString(R.string.goblin);
+            case 10: return G.GetLocalizedString(R.string.bloodelf);
+            case 11: return G.GetLocalizedString(R.string.draenei);
+            case 22: return G.GetLocalizedString(R.string.worgen);
             default:
                 return "0xCAFEBABE";
         }

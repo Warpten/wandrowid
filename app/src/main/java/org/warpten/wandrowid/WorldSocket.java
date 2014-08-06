@@ -101,7 +101,6 @@ public class WorldSocket implements GameSocket {
                 internalRun();
             } catch (Exception e) {
                 e.printStackTrace();
-                return;
             }
             Log.i("WandroWid", "Went out of the thread, something went bad. Breakpoint me!");
         }
@@ -142,7 +141,6 @@ public class WorldSocket implements GameSocket {
                 byte[] dataBuffer = incomingDataBuffer.toByteArray();
                 ByteBuffer workBuffer = ByteBuffer.wrap(dataBuffer);
 
-                // TODO: Figure out why this is messed up after SMSG_TUTORIAL_FLAGS
                 int opcodeSize = -1;
                 int opcode = -1;
 
@@ -225,7 +223,7 @@ public class WorldSocket implements GameSocket {
                     while (data.remaining() > 0)
                         socket.write(data);
 
-                    Log.i("WandroWid", "[WorldServer: C->S] Sending " + packet.GetOpcodeForLogging());
+                    G.Log("[WorldServer: C->S] Sending " + packet.GetOpcodeForLogging());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -234,7 +232,7 @@ public class WorldSocket implements GameSocket {
 
         private void DebugDump(byte[] dataBuffer)
         {
-            Log.d("WandroWid", "[DEBUG] Received data buffer: " + Arrays.toString(dataBuffer));
+            G.Log("[DEBUG] Received data buffer: " + Arrays.toString(dataBuffer));
         }
     }
 

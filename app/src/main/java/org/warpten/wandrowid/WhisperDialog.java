@@ -16,7 +16,7 @@ public class WhisperDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_whisper, null))
-                .setPositiveButton("Send!", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.button_send, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String targetName = ((EditText)WhisperDialog.this.getDialog().findViewById(R.id.dialog_whispertarget)).getText().toString();
@@ -24,7 +24,7 @@ public class WhisperDialog extends DialogFragment {
                         G.WorldSocket().opcodeHandlers.SendMessageChat(ChatMessageType.Whisper, targetName, message);;
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         WhisperDialog.this.getDialog().cancel();

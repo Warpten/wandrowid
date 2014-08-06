@@ -500,6 +500,17 @@ public class CataclysmHandlers extends Handlers {
                 socket.SendPacket(packet);
                 break;
             }
+            case ChatMessageType.Say:
+            {
+                if (arg[0].length() == 0)
+                    return;
+                WorldPacket packet = new WorldPacket(Opcodes.CMSG_MESSAGECHAT_SAY, 10 + arg[0].length());
+                packet.WriteInt32(G.GetLanguageForActiveCharacter());
+                packet.WriteBits(arg[0].length(), 9);
+                packet.WriteString(arg[0]);
+                socket.SendPacket(packet);
+                break;
+            }
             default:
                 break; // NYI
         }

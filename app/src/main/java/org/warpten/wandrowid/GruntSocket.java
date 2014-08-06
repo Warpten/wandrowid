@@ -3,7 +3,6 @@ package org.warpten.wandrowid;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import org.warpten.wandrowid.crypto.BigNumber;
 import org.warpten.wandrowid.crypto.CryptoUtils;
@@ -24,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  * This class is an extension of GameSocket, and handles all Grunt related data.
  * It works for both 3.3.5 and 4.3.4
  */
-public class AuthSocketGrunt implements GameSocket {
+public class GruntSocket implements GameSocket {
     protected volatile SocketChannel socket;
 
     private Thread listenerThread;
@@ -36,7 +35,7 @@ public class AuthSocketGrunt implements GameSocket {
 
     private Handler _interface;
 
-    public AuthSocketGrunt(Handler interfaceHandler) {
+    public GruntSocket(Handler interfaceHandler) {
         _writeQueue = new LinkedList<AuthPacket>();
         _interface = interfaceHandler;
     }
@@ -50,6 +49,11 @@ public class AuthSocketGrunt implements GameSocket {
     {
         listenerThread.interrupt();
         incomingMessageHandler.removeCallbacksAndMessages(null);
+    }
+
+    public final void SendMessage(int text, int progress)
+    {
+        SendMessage(G.GetLocalizedString(text), progress);
     }
 
     public final void SendMessage(String text, int progress)
@@ -89,7 +93,7 @@ public class AuthSocketGrunt implements GameSocket {
     public void connect()
     {
         try {
-            SendMessage("Connecting to server...", 0);
+            SendMessage(R.string.info_auth_progress_connecting, 0);
 
             _userHash = CryptoUtils.SHA1(G.Username);
             _passwordHash = new BigNumber(CryptoUtils.SHA1((G.Username + ":" + G.Password).toUpperCase()));
@@ -120,7 +124,7 @@ public class AuthSocketGrunt implements GameSocket {
         challenge.WriteIP();
         challenge.WriteByte((byte) G.Username.length());
         challenge.WriteAsciiString(G.Username);
-        SendMessage("Sending AUTH_LOGON_CHALLENGE", 10);
+        SendMessage(R.string.info_auth_progress_challenge_sent, 10);
         return challenge;
     }
 
@@ -133,7 +137,7 @@ public class AuthSocketGrunt implements GameSocket {
         proof.WriteBytes(CRC);
         proof.WriteByte((byte)0);
         proof.WriteByte((byte)0);
-        SendMessage("Sending AUTH_LOGON_PROOF", 50);
+        SendMessage(R.string.info_auth_progress_proof_sent, 50);
         SendPacket(proof);
     }
 
@@ -142,27 +146,27 @@ public class AuthSocketGrunt implements GameSocket {
         AuthPacket realmList = new AuthPacket(AuthOpcodes.REALM_LIST, 5);
         realmList.WriteByte((byte)0x10); // REALM_LIST
         realmList.WriteUint32(0);
-        SendMessage("Authentified, requesting realm list.", 90);
+        SendMessage(R.string.info_auth_progress_realmlist_request, 90);
         SendPacket(realmList);
     }
 
     public void HandleLogonChallenge(AuthPacket opcode) throws Exception
     {
-        SendMessage("Received AUTH_LOGON_CHALLENGE", 20);
+        SendMessage(R.string.info_auth_progress_challenge_received, 20);
         opcode.ReadByte(); // Skipped, always 0x00
         byte errorCode = opcode.ReadByte();
 
         if (errorCode != 0x00) {
             switch (errorCode)
             {
-                case 0x04: // AUTH_RESULT_NO_MATCH
-                    SendMessage("Unknown account name.", -1);
+                case 0x04:
+                    SendMessage(R.string.error_auth_result_no_match, -1);
                     break;
                 case 0x06: // AUTH_RESULT_ACCOUNT_IN_USE
-                    SendMessage("Account is already logged in.", -1);
+                    SendMessage(R.string.error_auth_result_account_in_use, -1);
                     break;
                 case 0x09: // AUTH_RESULT_WRONG_BUILD_NUMBER
-                    SendMessage("Invalid game version selected.", -1);
+                    SendMessage(R.string.error_auth_result_wrong_build_number, -1);
                     break;
                 default:
                     SendMessage("Unknown error.", -1);
@@ -262,46 +266,46 @@ public class AuthSocketGrunt implements GameSocket {
 
     public void HandleAuthProof(AuthPacket opcode)
     {
-        SendMessage("Received AUTH_LOGON_PROOF", 70);
+        SendMessage(R.string.info_auth_progress_proof_received, 70);
 
         byte errorCode = opcode.ReadByte();
         if (errorCode != 0x00) {
             switch (errorCode)
             {
                 case 0x0A: // UPDATE_CLIENT
-                    SendMessage("Client update requested.", -1);
+                    SendMessage(R.string.error_auth_result_need_update, -1);
                     break;
                 case 0x04: // NO_MATCH
                 case 0x05: // UNKNOWN
-                    SendMessage("Invalid password, account, or auth error.", -1);
+                    SendMessage(R.string.error_auth_result_no_match, -1);
                     break;
                 case 0x09: // WRONG_BUILD
-                    SendMessage("Invalid version.", -1);
+                    SendMessage(R.string.error_auth_result_wrong_build, -1);
                     break;
                 default:
-                    SendMessage("Unknown protocol error.", -1);
+                    SendMessage(R.string.error_auth_unk, -1);
             }
             return;
         }
 
         byte[] M2 = opcode.ReadBytes(20);
-        Log.i("WandroWid", "SRP6: Received M2 = " + CryptoUtils.convertToHex(M2));
+        // Log.i("WandroWid", "SRP6: Received M2 = " + CryptoUtils.convertToHex(M2));
         if (Arrays.equals(M2, G.M2))
             SendRealmList();
         else
-            SendMessage("Protocol proofs do not match.", -1);
+            SendMessage(R.string.error_auth_result_proof_mismatch, -1);
     }
 
     public void HandleRealmlist(AuthPacket opcode)
     {
-        SendMessage("Received AUTH_REALMLIST", 100);
+        SendMessage(R.string.info_auth_progress_realmlist_received, 100);
         SendMessage(opcode);
     }
 
     public void HandleDataBundle(Bundle b)
     {
         AuthPacket opcode = new AuthPacket(b.getByteArray("AuthPacket"));
-        Log.i("WandroWid", "[AuthServer: S->C] Received 0x" + Integer.toString(opcode.GetOpcode(), 16));
+        G.Log("[AuthServer: S->C] Received 0x" + Integer.toString(opcode.GetOpcode(), 16));
         switch (opcode.GetOpcode())
         {
             case 0x00: // AUTH_LOGON_CHALLENGE
@@ -330,10 +334,10 @@ public class AuthSocketGrunt implements GameSocket {
             try {
                 internalRun();
             } catch (TimeoutException e) {
-                OnConnectionError("Timed out while connecting.");
+                OnConnectionError(G.GetLocalizedString(R.string.error_network_timeout));
                 Thread.currentThread().interrupt();
             } catch (Exception e) {
-                OnConnectionError("Unknown error.");
+                OnConnectionError(G.GetLocalizedString(R.string.error_network_unknown));
                 Thread.currentThread().interrupt();
             }
         }
@@ -348,7 +352,7 @@ public class AuthSocketGrunt implements GameSocket {
             long timer = System.currentTimeMillis();
             while (!socket.finishConnect())
                 if ((System.currentTimeMillis() - timer) >= 10000)
-                    throw new TimeoutException("Timed out while connecting.");
+                    throw new TimeoutException();
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -376,13 +380,13 @@ public class AuthSocketGrunt implements GameSocket {
                     buffer.flip(); // Make ready for reading
                     byte[] packet = new byte[packetSize];
                     buffer.get(packet);
-                    Log.d("WandroWid", "Received " + Arrays.toString(packet));
+                    // G.Log("Received " + Arrays.toString(packet));
                     commandBundle.putByteArray("AuthPacket", packet);
 
                     commandMessage.setData(commandBundle);
                     incomingMessageHandler.sendMessage(commandMessage);
                 } catch (Exception e) {
-                    Log.i("WandroWid", "Closing auth socket.");
+                    // Log.i("WandroWid", "Closing auth socket.");
                     throw e;
                 }
             }
@@ -401,8 +405,10 @@ public class AuthSocketGrunt implements GameSocket {
             if (pkt == null || pkt.GetDataSize() == 0)
                 return;
 
-            Log.i("WandroWid", "[AuthServer: C->S] Sending 0x" + Integer.toString(pkt.GetOpcode(), 16));
-            int writeCount = socket.write(pkt.ToSendableData());
+            G.Log("[AuthServer: C->S] Sending 0x" + Integer.toString(pkt.GetOpcode(), 16));
+            socket.write(pkt.ToSendableData());
+            // We should check if everything is written - but packets are small
+            // Come back at it if this is an issue when deployed
         }
     }
 }

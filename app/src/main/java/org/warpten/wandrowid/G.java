@@ -3,6 +3,7 @@ package org.warpten.wandrowid;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.warpten.wandrowid.crypto.BigNumber;
 import org.warpten.wandrowid.fragments.CharEnumStruct;
@@ -29,7 +30,7 @@ public class G {
 
     public static GameSocket      Socket;
     public static WorldSocket     WorldSocket() { return (WorldSocket)Socket; }
-    public static AuthSocketGrunt GruntSocket() { return (AuthSocketGrunt)Socket; }
+    public static GruntSocket GruntSocket() { return (GruntSocket)Socket; }
 
     public static boolean IsWoTLK = false;
     public static boolean IsCataclysm = false;
@@ -40,7 +41,13 @@ public class G {
     public static byte[] M2;
 
     public static Context Context;
-    public static String GetLocalizedString(int identifier) { return ctx.getString(identifier); }
+    public static String GetLocalizedString(int identifier) { return Context.getString(identifier); }
+
+    public static void Log(String message)
+    {
+        if (GetBooleanSetting("logcat_logging", true))
+            Log.i("Wandrowid", message);
+    }
 
     // World Data
     public static String RealmAddress = "0.0.0.0";

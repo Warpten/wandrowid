@@ -182,7 +182,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
                 if (gameVersion == 0) // Needed due to absense of break
                     G.WoTLK();
                 try {
-                    G.Socket = new AuthSocketGrunt(InterfaceHandler);
+                    G.Socket = new GruntSocket(InterfaceHandler);
                     G.Socket.connect();
                 } catch (Exception e) {
                     G.Socket.close();

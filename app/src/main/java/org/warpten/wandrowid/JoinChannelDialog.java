@@ -17,15 +17,15 @@ public class JoinChannelDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_joinchannel, null))
-                .setPositiveButton("Join!", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.button_join_channel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String channelName = ((EditText)JoinChannelDialog.this.getDialog().findViewById(R.id.channelname)).getText().toString();
                         String channelPassword = ((EditText)JoinChannelDialog.this.getDialog().findViewById(R.id.channelpassword)).getText().toString();
-                        ((WorldSocket) G.Socket).opcodeHandlers.SendChannelJoin(0, channelName, channelPassword);
+                        G.WorldSocket().opcodeHandlers.SendChannelJoin(0, channelName, channelPassword);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         JoinChannelDialog.this.getDialog().cancel();

@@ -11,9 +11,6 @@ import android.widget.TextView;
 import org.warpten.wandrowid.G;
 import org.warpten.wandrowid.R;
 
-/**
- * Created by perquet on 23/07/14.
- */
 public class CharEnumAdapter extends ArrayAdapter<String> {
     private final Activity context;
 

@@ -26,16 +26,63 @@
     <string name="refresh">Refresh</string>
     <string name="char_enum_title">Character list</string>
     <string name="realm_list_title">Realm list</string>
+    <string name="button_join_channel">Join</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_send">Send!</string>
 
     <!-- Channel name strings -->
     <string name="channel_guild">Guild</string>
+    <string name="channel_local">Local chat</string>
 
     <!-- Error strings -->
     <string name="error_no_battlenet">Battle.NET login is not implemented yet.</string>
     <string name="error_auth_unk">Unknown error while connecting.</string>
     <string name="error_nyi">Not implemented!</string>
+    <string name="error_network_timeout">Timed out while connecting.</string>
+    <string name="error_network_unknown">Unknown network error.</string>
     <string name="error_select_version">Please select a version.</string>
+    <string name="error_auth_result_no_match">Unknown account name, or invalid password.</string>
+    <string name="error_auth_result_account_in_use">Account is already logged in.</string>
+    <string name="error_auth_result_wrong_build_number">Invalid game version selected.</string>
+    <string name="error_auth_result_need_update">Client update requested.</string>
+    <string name="error_auth_result_wrong_build">Wrong client build.</string>
+
+    <string name="error_auth_result_proof_mismatch">Protocol proofs do not match.</string>
 
     <!-- Info strings -->
     <string name="info_connecting_to_realm">Connecting to %s.</string>
+    <string name="info_auth_progress_connecting">Connecting to server...</string>
+    <string name="info_auth_progress_challenge_sent">Sending AUTH_LOGON_CHALLENGE</string>
+    <string name="info_auth_progress_proof_sent">Sending AUTH_LOGON_PROOF</string>
+    <string name="info_auth_progress_realmlist_request">Authentified, requesting realm list</string>
+    <string name="info_auth_progress_challenge_received">Received AUTH_LOGON_CHALLENGE</string>
+    <string name="info_auth_progress_proof_received">Received AUTH_LOGON_PROOF</string>
+    <string name="info_auth_progress_realmlist_received">Received AUTH_REALMLIST</string>
+
+    <!-- Actual game strings -->
+    <string name="warrior">Warrior</string>
+    <string name="paladin">Paladin</string>
+    <string name="hunter">Hunter</string>
+    <string name="rogue">Rogue</string>
+    <string name="priest">Priest</string>
+    <string name="deathknight">Death Knight</string>
+    <string name="shaman">Shaman</string>
+    <string name="mage">Mage</string>
+    <string name="warlock">Warlock</string>
+    <string name="druid">Druid</string>
+
+    <string name="human">Human</string>
+    <string name="orc">Orc</string>
+    <string name="dwarf">Dwarf</string>
+    <string name="nightelf">Nightelf</string>
+    <string name="tauren">Tauren</string>
+    <string name="undead">Undead</string>
+    <string name="gnome">Gnome</string>
+    <string name="troll">Troll</string>
+    <string name="goblin">Goblin</string>
+    <string name="bloodelf">Bloodelf</string>
+    <string name="draenei">Draenei</string>
+    <string name="worgen">Worgen</string>
+
+    <string name="char_enum_info_text">Level %u %s %s</string>
 </resources>

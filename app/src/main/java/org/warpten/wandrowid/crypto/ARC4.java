@@ -39,24 +39,6 @@ public class ARC4 {
             eCipher = new ARCFour();
             eCipher.init(mac.doFinal(key));
             eCipher.nextBytes(new byte[1024]);
-
-            /*HMac hash = new HMac(new Sha160());
-            hash.init(decryptionSeed);
-            hash.update(key, 0, key.length);
-
-            dCipher = new ARC4();
-            dCipher.init(hash.digest());
-            dCipher.nextBytes(skipSize);
-
-            hash = new HMac(new Sha160());
-            hash.init(encryptionSeed);
-            hash.update(key, 0, key.length);
-
-            skipSize = new byte[1024];
-
-            eCipher = new ARC4();
-            eCipher.init(hash.digest());
-            eCipher.nextBytes(skipSize);*/
         } catch (Exception e) { e.printStackTrace(); }
     }
 
@@ -103,11 +85,6 @@ public class ARC4 {
             retVal[i] = (byte)(cipherBytes[i] ^ (input[start + i] & 0xFF));
 
         return retVal;
-    }
-
-    public static byte[] DecryptBytes(byte[] input)
-    {
-        return DecryptBytes(input, 0, input.length);
     }
 
     public static byte DecryptByte(byte input)
