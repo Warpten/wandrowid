@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
+    <!-- Various strings -->
     <string name="emptystring"></string>
     <string name="altText_class">Class</string>
     <string name="altText_race">Race</string>
@@ -23,4 +24,18 @@
     <string name="connect">Connect</string>
     <string name="about">This application allows you to connect to 3.3.5 and 4.3.4 servers. If an email is provided as an username while trying to connect to a 4.3.4 server, Battle.NET connexion will be attempted.</string>
     <string name="refresh">Refresh</string>
+    <string name="char_enum_title">Character list</string>
+    <string name="realm_list_title">Realm list</string>
+
+    <!-- Channel name strings -->
+    <string name="channel_guild">Guild</string>
+
+    <!-- Error strings -->
+    <string name="error_no_battlenet">Battle.NET login is not implemented yet.</string>
+    <string name="error_auth_unk">Unknown error while connecting.</string>
+    <string name="error_nyi">Not implemented!</string>
+    <string name="error_select_version">Please select a version.</string>
+
+    <!-- Info strings -->
+    <string name="info_connecting_to_realm">Connecting to %s.</string>
 </resources>

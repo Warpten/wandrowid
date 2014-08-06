@@ -49,8 +49,8 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
                     if (fragment != null) { // Updating display
                         fragment.UpdateData(realmPacket);
                     } else {
-                        ReplaceFragment(RealmlistFragment.newInstance(realmPacket), "RealmlistFragment");
-                        setTitle("Select a realm to log into.");
+                        ReplaceFragment(RealmlistFragment.newInstance(realmPacket), TAG_REALMLISTFRAGMENT);
+                        setTitle(R.string.realm_list_title);
                     }
                     break;
                 }
@@ -70,31 +70,40 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
                     break;
                 }
                 case 3: // Display char enum
-                    ReplaceFragment(new CharEnumFragment(), "CharEnumFragment");
-                    setTitle("Select a character to log into");
+                    ReplaceFragment(new CharEnumFragment(), TAG_CHARENUMFRAGMENT);
+                    setTitle(R.string.char_enum_title);
                     break;
                 case 4: // New chat message
-                {
                     for (Bundle data : G.ReadyMessageQueue)
                         chatWindow.HandleDataBundle(data);
                     G.ReadyMessageQueue.clear();
                     break;
-                }
                 case 5: // Channel joined
-                {
                     OnJoinedChannel((String)msg.obj);
                     break;
-                }
             }
         }
     };
 
+    public static final String TAG_AUTHFRAGMENT      = "AuthFragment";
+    public static final String TAG_SETTINGSFRAGMENT  = "SettingsFragment";
+    public static final String TAG_JOINCHANNELDIALOG = "JoinChannelDialog";
+    public static final String TAG_WHISPERDIALOG     = "WhisperDialog";
+    public static final String TAG_CHATPAGERFRAGMENT = "ChatPagerFragment";
+    public static final String TAG_CHARENUMFRAGMENT  = "CharEnumFragment";
+    public static final String TAG_REALMLISTFRAGMENT = "RealmlistFragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Enable settings loading
         G.Preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Enable localization
+        G.Context = this;
+
         setContentView(R.layout.activity_main);
-        ReplaceFragment(new AuthFragment(), "AuthFragment");
+        ReplaceFragment(new AuthFragment(), TAG_AUTHFRAGMENT);
     }
 
 
@@ -116,18 +125,18 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            ReplaceFragmentAndBackstack(new SettingsFragment(), "SettingsFragment");
+            ReplaceFragmentAndBackstack(new SettingsFragment(), TAG_SETTINGSFRAGMENT);
             return true;
         } else if (id == R.id.action_join_channel) {
             JoinChannelDialog dialog = new JoinChannelDialog();
-            dialog.show(getFragmentManager(), "JoinChannelDialog");
+            dialog.show(getFragmentManager(), TAG_JOINCHANNELDIALOG);
             return true;
         } else if (id == R.id.action_leave_channel) {
             chatWindow.mAdapter.RemoveCurrentPage();
             return true;
         } else if (id == R.id.action_whisper) {
             WhisperDialog dialog = new WhisperDialog();
-            dialog.show(getFragmentManager(), "WhisperDialog");
+            dialog.show(getFragmentManager(), TAG_WHISPERDIALOG);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +164,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
 
         G.RealmName = ((EditText)findViewById(R.id.realmAddressBox)).getText().toString();
         G.Username = ((EditText)findViewById(R.id.userNameBox)).getText().toString();
-        G.Password = ((EditText)findViewById(R.id.passwordBox)).getText().toString(); // TODO clean this up after a while, its not needed once hash has been generated
+        G.Password = ((EditText)findViewById(R.id.passwordBox)).getText().toString();
 
         RadioGroup group = (RadioGroup)findViewById(R.id.radioGroup);
         int gameVersion = group.indexOfChild(findViewById(group.getCheckedRadioButtonId()));
@@ -165,32 +174,38 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
             case 1: // Cataclysm
                 G.Cataclysm();
                 if (G.Username.indexOf("@") != -1) { // Battle.NET
-                    MakeToast("Battle.NET login is not implemented yet.", true);
+                    MakeToast(R.string.error_no_battlenet, true);
                     break;
                 }
                 // no break
             case 0: // WoTLK
-                if (gameVersion == 0)
+                if (gameVersion == 0) // Needed due to absense of break
                     G.WoTLK();
                 try {
                     G.Socket = new AuthSocketGrunt(InterfaceHandler);
                     G.Socket.connect();
                 } catch (Exception e) {
                     G.Socket.close();
-                    MakeToast("Unknown error while connecting.", false);
+                    MakeToast(R.string.error_auth_unk, false);
                 }
                 break;
             case 2: // Retail
-                MakeToast("Not implemented!", true);
+                MakeToast(R.string.error_nyi, true);
                 break;
             default:
-                MakeToast("Please select a version.", true);
+                MakeToast(R.string.error_select_version, true);
+                break;
         }
     }
 
     public void OnRealmListRefreshRequest(View view)
     {
         G.Socket.SendRealmList();
+    }
+
+    public void MakeToast(int msg, boolean shortToast)
+    {
+        MakeToast(G.GetLocalizedString(msg), shortToast);
     }
 
     public void MakeToast(String msg, boolean shortToast)
@@ -205,7 +220,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
     {
         G.RealmAddress = address;
         G.RealmPort = port;
-        MakeToast("Connecting to " + realmName + ".", true);
+        MakeToast(String.format(G.GetLocalizedString(R.string.info_connecting_to_realm), realmName), true);
         G.Socket.close();
         G.Socket = null;
         G.Socket = new WorldSocket(InterfaceHandler);
@@ -216,14 +231,14 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
     {
         ((WorldSocket) G.Socket).opcodeHandlers.SendPlayerLogin(charName, charGuid);
         chatWindow = new ChatPagerFragment();
-        ReplaceFragment(chatWindow, "ChatPagerFragment");
+        ReplaceFragment(chatWindow, TAG_CHATPAGERFRAGMENT);
         invalidateOptionsMenu(); // re-trigger onCreateOptionsMenu
     }
 
     public void OnChatMessage(View view) {
         String message = ((EditText)findViewById(R.id.chatTextInputBox)).getText().toString();
         if (chatWindow.OnMessageChat(message)) // If sent, clear input
-            ((EditText)findViewById(R.id.chatTextInputBox)).setText("");
+            ((EditText)findViewById(R.id.chatTextInputBox)).setText(R.string.emptystring);
     }
 
     public void OnJoinedChannel(String channelName) {
@@ -253,32 +268,32 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
         // Don't super
     }
 
-    public void ReplaceFragment(Fragment fragment, String key) {
+    public void ReplaceFragment(Fragment fragment, String tag) {
         // Not sure if needed, just in case
         if (currentFragment != null)
             getSupportFragmentManager().beginTransaction()
                     .remove(currentFragment)
-                    .replace(R.id.container, fragment, key)
+                    .replace(R.id.container, fragment, tag)
                     .commit();
         else
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment, key)
+                    .replace(R.id.container, fragment, tag)
                     .commit();
         currentFragment = fragment;
     }
 
-    public void ReplaceFragmentAndBackstack(Fragment fragment, String key)
+    public void ReplaceFragmentAndBackstack(Fragment fragment, String tag)
     {
         // Not sure if needed, just in case
         if (currentFragment != null)
             getSupportFragmentManager().beginTransaction()
                     .remove(currentFragment)
-                    .replace(R.id.container, fragment, key)
+                    .replace(R.id.container, fragment, tag)
                     .addToBackStack(null)
                     .commit();
         else
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment, key)
+                    .replace(R.id.container, fragment, tag)
                     .addToBackStack(null)
                     .commit();
         currentFragment = fragment;

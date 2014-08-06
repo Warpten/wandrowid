@@ -1,5 +1,6 @@
 package org.warpten.wandrowid;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -37,6 +38,9 @@ public class G {
     public static BigNumber SessionKey;
 
     public static byte[] M2;
+
+    public static Context Context;
+    public static String GetLocalizedString(int identifier) { return ctx.getString(identifier); }
 
     // World Data
     public static String RealmAddress = "0.0.0.0";

@@ -86,7 +86,7 @@ public class ChatPagerFragment extends Fragment {
 
     public void OpenGuildChatTab()
     {
-        mAdapter.AddPage(ChatMessageType.Guild, "Guild");
+        mAdapter.AddPage(ChatMessageType.Guild, G.GetLocalizedString(R.string.channel_guild));
     }
     public void OpenLocalChat()
     {
