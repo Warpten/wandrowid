@@ -50,7 +50,7 @@
     <string name="error_auth_result_proof_mismatch">Protocol proofs do not match.</string>
 
     <!-- Info strings -->
-    <string name="info_connecting_to_realm">Connecting to %s.</string>
+    <string name="info_connecting_to_realm">Connecting to %1$s.</string>
     <string name="info_auth_progress_connecting">Connecting to server...</string>
     <string name="info_auth_progress_challenge_sent">Sending AUTH_LOGON_CHALLENGE</string>
     <string name="info_auth_progress_proof_sent">Sending AUTH_LOGON_PROOF</string>
@@ -84,5 +84,5 @@
     <string name="draenei">Draenei</string>
     <string name="worgen">Worgen</string>
 
-    <string name="char_enum_info_text">Level %u %s %s</string>
+    <string name="char_enum_info_text">Level %1$u %2$s %3$s</string>
 </resources>

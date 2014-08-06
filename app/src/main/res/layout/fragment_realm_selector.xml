@@ -10,13 +10,6 @@
         android:layout_height="fill_parent"
         android:layout_gravity="left|top">
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_below="@id/realmlistRefreshButton"
-            android:id="@+id/realmlistListView"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_height="match_parent" />
-
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
@@ -27,5 +20,14 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:onClick="OnRealmListRefreshRequest" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/realmlistRefreshButton"
+            android:id="@+id/realmlistListView"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_height="match_parent" />
+
+
     </RelativeLayout>
 </FrameLayout>
