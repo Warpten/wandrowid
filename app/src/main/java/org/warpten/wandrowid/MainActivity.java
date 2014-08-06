@@ -114,6 +114,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
         if (chatWindow == null) {
             menu.findItem(R.id.action_join_channel).setVisible(false);
             menu.findItem(R.id.action_whisper).setVisible(false);
+            menu.findItem(R.id.action_leave_channel).setVisible(false);
         }
         return true;
     }
