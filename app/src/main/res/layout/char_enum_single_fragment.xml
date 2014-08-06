@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/factionImage"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/altText_faction"
+        android:visibility="visible" />
+
+    <ImageView
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:id="@+id/raceImage"
+        android:contentDescription="@string/altText_race"
+        android:layout_alignTop="@id/factionImage"
+        android:layout_toRightOf="@id/factionImage"
+        android:layout_marginLeft="5dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:id="@+id/classImage"
+        android:contentDescription="@string/altText_class"
+        android:layout_below="@id/raceImage"
+        android:layout_alignLeft="@id/raceImage"
+        android:layout_alignStart="@id/raceImage"
+        android:layout_marginTop="1dp"
+        android:visibility="visible"
+        android:layout_alignParentEnd="false" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/emptystring"
+        android:id="@+id/nameText"
+        android:layout_alignTop="@id/raceImage"
+        android:layout_marginLeft="10dp"
+        android:paddingLeft="100dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="9dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/emptystring"
+        android:id="@+id/levelText"
+        android:layout_below="@id/nameText"
+        android:layout_marginLeft="10dp"
+        android:paddingLeft="100dp"
+        android:layout_alignBottom="@id/classImage" />
+
+</RelativeLayout>

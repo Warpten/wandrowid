@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<PreferenceCategory
+        android:title="General">
+        <PreferenceScreen
+            android:title="General"
+            android:persistent="false" >
+
+            <Preference
+                android:title="Add server ...">
+
+                <PreferenceScreen
+                    android:title="New server"
+                    android:persistent = "false" >
+
+                    <EditTextPreference
+                        android:dialogTitle="Server Name"
+
+                </PreferenceScreen>
+
+            </Preference>
+
+
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>-->
+
+    <PreferenceCategory
+        android:title="General"
+        >
+        <CheckBoxPreference
+            android:key="msg_timestamp"
+            android:summary="Indicate time at which messages were received."
+            android:title="Show timestamp"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Developper">
+        <CheckBoxPreference
+            android:key="pref_log_pkt"
+            android:summary="Generates a .pkt file for WPP."
+            android:title="Dump packets"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

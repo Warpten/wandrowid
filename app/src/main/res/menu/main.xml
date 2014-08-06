@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.warpten.wandrowid.MainActivity" >
+    
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_join_channel"
+        android:title="Join Channel ..."
+        android:orderInCategory="99"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_leave_channel"
+        android:title="Leave Channel ..."
+        android:orderInCategory="98"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_whisper"
+        android:title="Whisper ..."
+        android:orderInCategory="97"
+        android:showAsAction="never" />
+</menu>

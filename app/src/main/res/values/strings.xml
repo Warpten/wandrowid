@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WandroWid</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="emptystring"></string>
+    <string name="altText_class">Class</string>
+    <string name="altText_race">Race</string>
+    <string name="altText_faction">Faction</string>
+    <string name="target">Target</string>
+    <string name="message">Message</string>
+    <string name="target_channel">Channel name</string>
+    <string name="channel_password">Channel password (Optional)</string>
+    <string name="OK">OK</string>
+    <string name="realm_address">Realm Address</string>
+    <string name="account_name">Account name</string>
+    <string name="account_password">********</string>
+    <string name="wotlk">WoTLK</string>
+    <string name="cataclysm">Cataclysm</string>
+    <string name="retail">Retail</string>
+    <string name="connect">Connect</string>
+    <string name="about">This application allows you to connect to 3.3.5 and 4.3.4 servers. If an email is provided as an username while trying to connect to a 4.3.4 server, Battle.NET connexion will be attempted.</string>
+    <string name="refresh">Refresh</string>
+</resources>

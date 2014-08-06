@@ -1,0 +1,63 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.warpten.wandrowid.fragments.ChatPagerFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearvertical">
+
+        <!-- Re-enable when NPE is fixed -->
+        <!--<com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/titlestrip"
+            android:layout_width="match_parent"
+            android:layout_height="48dip" />-->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:layout_weight="1">
+            <android.support.v4.view.PagerTabStrip
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:id="@+id/titlestrip"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+            </android.support.v4.view.PagerTabStrip>
+
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:layout_gravity="bottom">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/chatTextInputBox"
+                    android:visibility="visible"
+                    android:layout_marginTop="10dp"
+                    android:inputType="text"
+                    android:layout_weight="1" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/OK"
+                    android:onClick="OnChatMessage"
+                    android:id="@+id/button" />
+
+            </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

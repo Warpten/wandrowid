@@ -1,0 +1,31 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_realm_selector"
+    tools:context="org.warpten.wandrowid.fragments.RealmlistFragment">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|top">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_below="@id/realmlistRefreshButton"
+            android:id="@+id/realmlistListView"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_height="match_parent" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/refresh"
+            android:id="@+id/realmlistRefreshButton"
+            android:layout_gravity="left|top"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="OnRealmListRefreshRequest" />
+    </RelativeLayout>
+</FrameLayout>
