@@ -67,6 +67,13 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
 
                     fragment.UpdateData(data);
                     return;
+                case ChatMessageType.Say:
+                    if (messageType != ChatMessageType.Yell &&
+                        messageType != ChatMessageType.Say)
+                        continue;
+
+                    fragment.UpdateData(data);
+                    return;
             }
         }
 
@@ -87,6 +94,11 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
                 break;
             case ChatMessageType.Guild:
                 AddPage(messageType, G.GetLocalizedString(R.string.channel_guild));
+                HandleIncomingPacket(data); // Update again
+                break;
+            case ChatMessageType.Say:
+            case ChatMessageType.Yell:
+                AddPage(ChatMessageType.Say, G.GetLocalizedString(R.string.channel_local));
                 HandleIncomingPacket(data); // Update again
                 break;
         }

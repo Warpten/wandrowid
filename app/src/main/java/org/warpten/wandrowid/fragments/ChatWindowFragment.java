@@ -3,7 +3,9 @@ package org.warpten.wandrowid.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
 import android.text.format.DateFormat;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,18 +35,34 @@ public class ChatWindowFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null && savedInstanceState.getString("contents") != null) {
+        if (savedInstanceState != null && savedInstanceState.getString("contents") != null)
             contentBuffer = savedInstanceState.getString("contents");
-            int crlf = contentBuffer.lastIndexOf('\n');
-            if (crlf != -1)
-                contentBuffer = contentBuffer.substring(crlf);
-        }
 
         if (getArguments() != null) {
             descriptor = getArguments().getParcelable("dataBundle");
             MessageType = descriptor.GetType();
             FrameName = descriptor.getTitle();
         }
+    }
+
+
+    // TODO: Broken, not sure why this is not called (adapter not retaining fragments ?)
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String inText = messageWindow.getText().toString();
+        if (inText == null)
+            return;
+
+        int lineCount = 50;
+        int pos = inText.length();
+        while (lineCount-- > 0 && pos != -1)
+            pos = inText.lastIndexOf('\n', pos-1);
+
+        if (pos != -1)
+            outState.putString("contents", inText.substring(pos));
+        else
+            outState.putString("contents", inText);
     }
 
     @Override
@@ -100,7 +118,7 @@ public class ChatWindowFragment extends Fragment {
             case ChatMessageType.WhisperInform:
                 String whoSaid = (data.getInt("chatMessageType") == ChatMessageType.Whisper
                         ? "You said" : "Peer said:");
-                if (!G.GetBooleanSetting("msg_timestamp", false))
+                if (!G.GetBooleanSetting(SettingsFragment.SETTING_TIMESTAMP, false))
                     result = String.format("%n%s %s", whoSaid, data.getString("message"));
                 else
                     result = String.format("%n[%s] %s %s",
@@ -108,15 +126,27 @@ public class ChatWindowFragment extends Fragment {
                             whoSaid, data.getString("message"));
                 break;
             default:
-                if (!G.GetBooleanSetting("msg_timestamp", false))
+                if (!G.GetBooleanSetting(SettingsFragment.SETTING_TIMESTAMP, false))
                     result = String.format("%n(%s) %s", data.getString("senderName"), data.getString("message"));
                 else
                     result = String.format("%n[%s] (%s) %s",
                             DateFormat.format("HH:mm:ss", data.getLong("timestamp")),
                             data.getString("senderName"), data.getString("message"));
+
+                if (data.getInt("chatMessageType") == ChatMessageType.Yell) {
+                    SpannableString redSpannable = new SpannableString(result);
+                    redSpannable.setSpan(new ForegroundColorSpan(Color.RED), 0, result.length(), 0);
+                    messageWindow.append(redSpannable);
+                    result = null; // Quick hack
+                }
+
                 break;
         }
-        messageWindow.append(result);
+        if (result != null) {
+            if (messageWindow.length() == 0)
+                result = result.substring(1); // Get rid of first CRLF (Hacky, but eh)
+            messageWindow.append(result);
+        }
         scroller.fullScroll(View.FOCUS_DOWN);
     }
 }

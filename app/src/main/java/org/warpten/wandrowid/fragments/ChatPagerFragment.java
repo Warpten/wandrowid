@@ -37,6 +37,7 @@ public class ChatPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         mPager = (ViewPager)view.findViewById(R.id.pager);
+        mPager.setOffscreenPageLimit(10); //! TODO: RIDICULOUS HACK UNTIL I FIGURE OUT A PROPER FIX
 
         ArrayList<PageDescriptor> descriptors = new ArrayList<PageDescriptor>();
         mAdapter = new ChatPagerAdapter(mPager, getActivity().getSupportFragmentManager(), descriptors);
@@ -53,10 +54,9 @@ public class ChatPagerFragment extends Fragment {
         PagerTabStrip strip = (PagerTabStrip)view.findViewById(R.id.titlestrip);
         strip.setTabIndicatorColor(Color.CYAN);
 
+        OpenLocalChat();
         if (G.IsInGuild())
             OpenGuildChatTab();
-
-        OpenLocalChat();
 
         return view;
     }
