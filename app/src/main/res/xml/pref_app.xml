@@ -42,6 +42,7 @@
             <CheckBoxPreference
                 android:key="autojoin_enabled"
                 android:title="Toggle autojoin"
+                android:summary="@string/pref_autojoin_disabled"
                 android:defaultValue="false" />
             <EditTextPreference
                 android:dependency="autojoin_enabled"
