@@ -45,8 +45,8 @@ public class ChatWindowFragment extends Fragment {
         }
     }
 
-
-    // TODO: Broken, not sure why this is not called (adapter not retaining fragments ?)
+    // Not called because fragments are not detached - See ChatPagerAdapter.NEVERDESTROY
+    // Eventually this hack will be removed and this function will be called
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

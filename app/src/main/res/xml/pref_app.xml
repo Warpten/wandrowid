@@ -44,19 +44,29 @@
                 android:title="Toggle autojoin"
                 android:defaultValue="false" />
             <EditTextPreference
+                android:dependency="autojoin_enabled"
                 android:key="autojoin_realm"
                 android:title="Realm Name"
                 android:dialogTitle="Realm Name" />
             <EditTextPreference
+                android:dependency="autojoin_enabled"
                 android:key="autojoin_username"
                 android:title="Account name"
                 android:dialogTitle="Account Name" />
             <EditTextPreference
+                android:dependency="autojoin_enabled"
                 android:key="autojoin_password"
                 android:title="Account password"
                 android:dialogTitle="Password"
                 android:inputType="textPassword"
                 android:password="true"/>
+            <ListPreference
+                android:dependency="autojoin_enabled"
+                android:key="autojoin_realmversion"
+                android:title="Realm Version"
+                android:dialogTitle="Choose ..."
+                android:entries="@array/versionsArray"
+                android:entryValues="@array/versionValuesArray" />
         </PreferenceScreen>
     </PreferenceCategory>
 

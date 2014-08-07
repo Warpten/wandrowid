@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="versionsArray">
+        <item>WoTLK (3.3.5.12340)</item>
+        <item>Cataclysm (4.3.4.15595)</item>
+        <!--<item>Retail</item>-->
+    </string-array>
+
+    <!-- DO NOT LOCALIZE ME -->
+    <string-array name="versionValuesArray">
+        <item>12340</item>
+        <item>15595</item>
+    </string-array>
+
+</resources>

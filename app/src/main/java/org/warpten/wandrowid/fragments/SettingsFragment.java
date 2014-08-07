@@ -2,7 +2,6 @@ package org.warpten.wandrowid.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v4.preference.PreferenceFragment;
@@ -25,11 +24,13 @@ import org.warpten.wandrowid.R;
 public class SettingsFragment extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final String SETTING_DUMPPKT        = "pref_log_pkt";
-    public static final String SETTING_TIMESTAMP      = "msg_timestamp";
-    public static final String SETTING_AUTOJOINTOGGLE = "subsettings_autojoin";
-    public static final String SETTING_AUTOJOINREALM  = "autojoin_realm";
-    public static final String SETTING_AUTOJOINUSER   = "autojoin_username";
+    public static final String SETTING_DUMPPKT          = "pref_log_pkt";
+    public static final String SETTING_TIMESTAMP        = "msg_timestamp";
+    public static final String SETTING_AUTOJOINTOGGLE   = "autojoin_enabled";
+    public static final String SETTING_AUTOJOINREALM    = "autojoin_realm";
+    public static final String SETTING_AUTOJOINUSER     = "autojoin_username";
+    public static final String SETTING_AUTOJOINPASSWORD = "autojoin_password";
+    public static final String SETTING_AUTOJOINREALMVER = "autojoin_realmversion";
 
     @Override
     public void onResume() {
@@ -55,7 +56,9 @@ public class SettingsFragment extends PreferenceFragment
         } else if (key.equals(SETTING_AUTOJOINREALM) || key.equals(SETTING_AUTOJOINUSER)) {
             Preference pref = findPreference(key);
             pref.setSummary(settings.getString(key, G.GetLocalizedString(R.string.pref_autojoin_noconfig)));
-            ((CheckBoxPreference)findPreference(SETTING_AUTOJOINTOGGLE)).setChecked(true);
+        } else if (key.equals(SETTING_AUTOJOINREALMVER)) {
+            Preference pref = findPreference(key);
+            pref.setSummary(settings.getString(key, G.GetLocalizedString(R.string.pref_autojoin_nobuild)));
         }
     }
 

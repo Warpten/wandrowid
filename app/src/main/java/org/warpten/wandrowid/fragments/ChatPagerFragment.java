@@ -37,7 +37,6 @@ public class ChatPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         mPager = (ViewPager)view.findViewById(R.id.pager);
-        mPager.setOffscreenPageLimit(10); //! TODO: RIDICULOUS HACK UNTIL I FIGURE OUT A PROPER FIX
 
         ArrayList<PageDescriptor> descriptors = new ArrayList<PageDescriptor>();
         mAdapter = new ChatPagerAdapter(mPager, getActivity().getSupportFragmentManager(), descriptors);
@@ -47,7 +46,7 @@ public class ChatPagerFragment extends Fragment {
         // Uncomment when NPE on empty pager is fixed (should gracefully ignore)
         // or make a custom scroll listener ?
         // See https://github.com/romainguefveneu/PagerSlidingTabStrip/commit/312cd015fce3428dd7771150a84b8615f4231dde#diff-f09fce23197350fb33b00423e189e98eR401
-        // Aka overwrite pagerslidingtabstrip with all our might glory needs
+        // Aka overwrite PagerSlidingTabStrip with all our might glory needs
         // mStrip = (PagerSlidingTabStrip)view.findViewById(R.id.titlestrip);
         // mStrip.setViewPager(mPager);
 

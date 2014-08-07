@@ -28,6 +28,10 @@ public class G {
         return Preferences.getBoolean(key, defaultValue);
     }
 
+    public static String GetStringSetting(String key) {
+        return Preferences.getString(key, "");
+    }
+
     public static GameSocket      Socket;
     public static WorldSocket     WorldSocket() { return (WorldSocket)Socket; }
     public static GruntSocket GruntSocket() { return (GruntSocket)Socket; }

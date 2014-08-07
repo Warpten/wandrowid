@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,6 +105,17 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
 
         setContentView(R.layout.activity_main);
         ReplaceFragment(new AuthFragment(), TAG_AUTHFRAGMENT);
+
+        if (G.GetBooleanSetting(SettingsFragment.SETTING_AUTOJOINTOGGLE, false)) {
+            ((EditText)findViewById(R.id.realmAddressBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINREALM));
+            ((EditText)findViewById(R.id.userNameBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINUSER));
+            ((EditText)findViewById(R.id.passwordBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINPASSWORD));
+            String realmVerString = G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINREALMVER);
+            if (realmVerString.equals("12340"))
+                ((RadioButton)findViewById(R.id.wotlkButton)).setChecked(true);
+            else if (realmVerString.equals(15595))
+                ((RadioButton)findViewById(R.id.cataclysmButton)).setChecked(true);
+        }
     }
 
 
@@ -156,7 +168,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
 
     public void OnConnexionRequest(View view) {
         if (!IsConnected(this)) {
-            MakeToast("Make sure that either WiFi or 3G is enabled.", false);
+            MakeToast(R.string.error_enable_device_network, false);
             return;
         }
 
@@ -174,7 +186,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
         {
             case 1: // Cataclysm
                 G.Cataclysm();
-                if (G.Username.indexOf("@") != -1) { // Battle.NET
+                if (G.Username.contains("@")) { // Battle.NET
                     MakeToast(R.string.error_no_battlenet, true);
                     break;
                 }

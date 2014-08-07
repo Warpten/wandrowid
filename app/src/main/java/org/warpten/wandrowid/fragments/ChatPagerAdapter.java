@@ -1,7 +1,9 @@
 package org.warpten.wandrowid.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import com.commonsware.cwac.pager.PageDescriptor;
@@ -17,13 +19,13 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
     private ViewPager pager;
 
     public ChatPagerAdapter(ViewPager mPager, FragmentManager fm, ArrayList<PageDescriptor> descriptors) {
-        super(fm, descriptors);
+        super(fm, descriptors, NEVERDESTROY);
         this.pager = mPager;
     }
 
     @Override
     protected ChatWindowFragment createFragment(PageDescriptor desc) {
-        return ChatWindowFragment.initFromState((ChatWindowDescriptor)desc);
+        return ChatWindowFragment.initFromState((ChatWindowDescriptor) desc);
     }
 
     /*
@@ -133,4 +135,19 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
         if (position > 0 && position < getCount())
             this.pager.setCurrentItem(position);
     }
+
+    // This is still a hack - I should figure out a nice retention strategy that
+    // lets me reinstanciate fragments and repopulate their TextView.
+    public static final RetentionStrategy NEVERDESTROY = new RetentionStrategy()
+    {
+        @Override
+        public void attach(Fragment fragment, FragmentTransaction currTransaction) {
+            currTransaction.attach(fragment);
+        }
+
+        @Override
+        public void detach(Fragment fragment, FragmentTransaction fragmentTransaction) {
+            // Do nothing
+        }
+    };
 }

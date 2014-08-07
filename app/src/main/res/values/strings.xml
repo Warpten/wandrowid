@@ -45,7 +45,7 @@
     <string name="error_auth_result_wrong_build_number">Invalid game version selected.</string>
     <string name="error_auth_result_need_update">Client update requested.</string>
     <string name="error_auth_result_wrong_build">Wrong client build.</string>
-
+    <string name="error_enable_device_network">Make sure that either WiFi or 3G is enabled.</string>
     <string name="error_auth_result_proof_mismatch">Protocol proofs do not match.</string>
 
     <!-- Info strings -->
@@ -62,6 +62,7 @@
     <string name="pref_autojoin_enabled">Realm autoconnect is enabled.</string>
     <string name="pref_autojoin_disabled">Realm autoconnect is disabled.</string>
     <string name="pref_autojoin_noconfig">Autojoin not configured.</string>
+    <string name="pref_autojoin_nobuild">No build selected.</string>
 
     <!-- Actual game strings -->
     <string name="warrior">Warrior</string>
