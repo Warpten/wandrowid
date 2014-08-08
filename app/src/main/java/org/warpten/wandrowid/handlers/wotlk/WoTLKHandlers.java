@@ -256,7 +256,7 @@ public class WoTLKHandlers extends Handlers {
             case ChatMessageType.Guild:
             case ChatMessageType.Say:
             {
-                opcodeSize += args[1].length();
+                opcodeSize += args[msgIndex].length();
 
                 WorldPacket packet = new WorldPacket(Opcodes.CMSG_MESSAGECHAT, opcodeSize);
                 packet.WriteInt32(type);
