@@ -459,6 +459,7 @@ public class CataclysmHandlers extends Handlers {
         data.WriteInt32(channelId);
         data.WriteBits(channelName.length(), 8);
         data.WriteString(channelName);
+        socket.SendPacket(data);
     }
 
     /*
