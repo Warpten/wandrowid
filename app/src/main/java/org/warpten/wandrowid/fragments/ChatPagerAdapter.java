@@ -40,7 +40,7 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
         String channelName = data.getString("channelName");
         int messageType = data.getInt("chatMessageType");
 
-        //! Code duplicated for simplicity of brain behavior!
+        //! Code duplicated for simplicity of brain processing!
         for (int i = 0; i < getCount(); ++i) {
             ChatWindowFragment fragment = getExistingFragment(i);
             switch (fragment.MessageType)

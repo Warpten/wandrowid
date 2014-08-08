@@ -34,7 +34,7 @@ public class G {
 
     public static GameSocket      Socket;
     public static WorldSocket     WorldSocket() { return (WorldSocket)Socket; }
-    public static GruntSocket GruntSocket() { return (GruntSocket)Socket; }
+    public static GruntSocket     GruntSocket() { return (GruntSocket)Socket; }
 
     public static boolean IsWoTLK = false;
     public static boolean IsCataclysm = false;

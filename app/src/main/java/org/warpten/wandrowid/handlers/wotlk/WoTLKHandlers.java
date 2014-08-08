@@ -6,6 +6,7 @@ import android.util.Log;
 import org.apache.http.util.EncodingUtils;
 import org.warpten.wandrowid.G;
 import org.warpten.wandrowid.ObjectGuid;
+import org.warpten.wandrowid.PacketLogger;
 import org.warpten.wandrowid.crypto.ARC4;
 import org.warpten.wandrowid.crypto.BigNumber;
 import org.warpten.wandrowid.crypto.CryptoUtils;
@@ -21,24 +22,31 @@ public class WoTLKHandlers extends Handlers {
         super(socket);
     }
 
-    public void CallHandler(WorldPacket opc) {
+    public void CallHandler(WorldPacket recvData) {
         WorldPacket sendData = null;
-        Log.i("WandroWid", "S->C: Received 0x" + Integer.toString(opc.GetOpcode(), 16).toUpperCase());
-        switch (opc.GetOpcode()) {
+
+        Log.i("WandroWid", "S->C: Received " + recvData.GetOpcodeForLogging());
+        PacketLogger.LogPacket(recvData, PacketLogger.SERVER_TO_CLIENT);
+
+        switch (recvData.GetOpcode()) {
             case Opcodes.SMSG_AUTH_CHALLENGE:
-                sendData = HandleAuthChallenge(opc);
+                sendData = HandleAuthChallenge(recvData);
                 break;
             case Opcodes.SMSG_AUTH_RESPONSE:
-                sendData = HandleAuthResponse(opc);
+                sendData = HandleAuthResponse(recvData);
                 break;
             case Opcodes.SMSG_CHAR_ENUM:
-                sendData = HandleCharEnum(opc);
+                sendData = HandleCharEnum(recvData);
                 break;
             case Opcodes.SMSG_MESSAGECHAT:
-                HandleMessageChat(opc);
+                HandleMessageChat(recvData);
                 break;
             case Opcodes.SMSG_NAME_QUERY_RESPONSE:
-                HandleNameQueryResponse(opc);
+                HandleNameQueryResponse(recvData);
+                break;
+            case Opcodes.SMSG_CHANNEL_NOTIFY:
+                HandleChannelNotify(recvData);
+                break;
             default:
                 break;
         }
@@ -212,6 +220,14 @@ public class WoTLKHandlers extends Handlers {
         G.TryFlushReadyMessages();           // Try adding new messages
     }
 
+    public void HandleChannelNotify(WorldPacket recvData)
+    {
+        int notifyType = recvData.ReadUint8();
+        String channelName = recvData.ReadCString();
+        if (notifyType == 2) // YouJoined
+            socket.OnJoinedChannel(channelName);
+    }
+
     public void HandleNameQueryResponse(WorldPacket recvData) {
         ObjectGuid guid = recvData.ReadPackedGuid();
         if (recvData.ReadInt8() == 1) // Not found
@@ -239,7 +255,10 @@ public class WoTLKHandlers extends Handlers {
     public void SendPlayerLogin(String charName, byte[] guid) {
         WorldPacket data = new WorldPacket(Opcodes.CMSG_PLAYER_LOGIN, 8);
         data.WriteBytes(guid);
+        G.CharacterCache.put(new ObjectGuid(guid).GUID, charName); // Cache ourselves
         socket.SendPacket(data);
+        // TODO: move autojoin to settings and load
+        SendChannelJoin(0, "world", null); // Custom channels dont have an id( its dbc id)
     }
 
     @Override
@@ -250,13 +269,13 @@ public class WoTLKHandlers extends Handlers {
         {
             case ChatMessageType.Channel:
             case ChatMessageType.Whisper:
-                opcodeSize += args[0].length();
+                opcodeSize += args[0].length() + 1;
                 msgIndex = 1;
                 // no break
             case ChatMessageType.Guild:
             case ChatMessageType.Say:
             {
-                opcodeSize += args[msgIndex].length();
+                opcodeSize += args[msgIndex].length() + 1;
 
                 WorldPacket packet = new WorldPacket(Opcodes.CMSG_MESSAGECHAT, opcodeSize);
                 packet.WriteInt32(type);
@@ -273,9 +292,9 @@ public class WoTLKHandlers extends Handlers {
 
     @Override
     public void SendChannelJoin(int channelId, String channelName, String channelPassword) {
-        int opcodeSize = 6 + channelName.length();
+        int opcodeSize = 13 + channelName.length() + 1; // Grossly over-estimate
         if (channelPassword != null)
-            opcodeSize += channelPassword.length();
+            opcodeSize += channelPassword.length() + 1;
 
         WorldPacket packet = new WorldPacket(Opcodes.CMSG_JOIN_CHANNEL, opcodeSize);
         packet.WriteInt32(channelId);
@@ -288,7 +307,7 @@ public class WoTLKHandlers extends Handlers {
 
     @Override
     public void SendLeaveChannel(int channelId, String channelName) {
-        WorldPacket data = new WorldPacket(Opcodes.CMSG_LEAVE_CHANNEL, 4 + channelName.length());
+        WorldPacket data = new WorldPacket(Opcodes.CMSG_LEAVE_CHANNEL, 4 + channelName.length() + 1);
         data.WriteInt32(channelId);
         data.WriteCString(channelName);
         socket.SendPacket(data);
