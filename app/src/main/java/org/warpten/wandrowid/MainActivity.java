@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,20 +105,11 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
         G.Context = this;
 
         setContentView(R.layout.activity_main);
-        ReplaceFragment(new AuthFragment(), TAG_AUTHFRAGMENT);
 
-        if (G.GetBooleanSetting(SettingsFragment.SETTING_AUTOJOINTOGGLE, false)) {
-            ((EditText)findViewById(R.id.realmAddressBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINREALM));
-            ((EditText)findViewById(R.id.userNameBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINUSER));
-            ((EditText)findViewById(R.id.passwordBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINPASSWORD));
-            String realmVerString = G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINREALMVER);
-            if (realmVerString.equals("12340"))
-                ((RadioButton)findViewById(R.id.wotlkButton)).setChecked(true);
-            else if (realmVerString.equals(15595))
-                ((RadioButton)findViewById(R.id.cataclysmButton)).setChecked(true);
-        }
+        // Do not re-inset AuthFragment on orientation change if not on this screen.
+        if (savedInstanceState == null)
+            ReplaceFragment(new AuthFragment(), TAG_AUTHFRAGMENT);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -269,7 +261,18 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_main, container, false);
+            View view = inflater.inflate(R.layout.fragment_main, container, false);
+            if (G.GetBooleanSetting(SettingsFragment.SETTING_AUTOJOINTOGGLE, false)) {
+                ((EditText)view.findViewById(R.id.realmAddressBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINREALM));
+                ((EditText)view.findViewById(R.id.userNameBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINUSER));
+                ((EditText)view.findViewById(R.id.passwordBox)).setText(G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINPASSWORD));
+                String realmVerString = G.GetStringSetting(SettingsFragment.SETTING_AUTOJOINREALMVER);
+                if (realmVerString.equals("12340"))
+                    ((RadioButton)view.findViewById(R.id.wotlkButton)).setChecked(true);
+                else if (realmVerString.equals("15595"))
+                    ((RadioButton)view.findViewById(R.id.cataclysmButton)).setChecked(true);
+            }
+            return view;
         }
     }
 
