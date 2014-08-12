@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.warpten.wandrowid.R;
-import org.warpten.wandrowid.network.AuthPacket;
+import org.warpten.wandrowid.network.GruntPacket;
 
 /**
  * Custom class that is used to display realms on the realm selection screen.
@@ -24,7 +24,7 @@ public class RealmlistAdapter extends ArrayAdapter<String> {
         this.realmData = realminfos;
     }
 
-    public void UpdateData(AuthPacket packet)
+    public void UpdateData(GruntPacket packet)
     {
         realmData.UpdateData(packet);
     }

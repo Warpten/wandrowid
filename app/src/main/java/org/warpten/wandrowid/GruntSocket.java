@@ -7,7 +7,9 @@ import android.os.Message;
 import org.warpten.wandrowid.crypto.BigNumber;
 import org.warpten.wandrowid.crypto.CryptoUtils;
 import org.warpten.wandrowid.network.AuthOpcodes;
-import org.warpten.wandrowid.network.AuthPacket;
+import org.warpten.wandrowid.network.GamePacket;
+import org.warpten.wandrowid.network.GameSocket;
+import org.warpten.wandrowid.network.GruntPacket;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,7 +30,7 @@ public class GruntSocket implements GameSocket {
 
     private Thread listenerThread;
 
-    private volatile Queue<AuthPacket> _writeQueue;
+    private volatile Queue<GruntPacket> _writeQueue;
 
     protected BigNumber _passwordHash;
     protected byte[] _userHash;
@@ -36,19 +38,24 @@ public class GruntSocket implements GameSocket {
     private Handler _interface;
 
     public GruntSocket(Handler interfaceHandler) {
-        _writeQueue = new LinkedList<AuthPacket>();
+        _writeQueue = new LinkedList<GruntPacket>();
         _interface = interfaceHandler;
     }
 
-    public void SendPacket(AuthPacket packet)
+    public void SendPacket(GamePacket packet)
     {
-        _writeQueue.add(packet);
+        _writeQueue.add((GruntPacket)packet);
     }
 
     public final void close()
     {
-        listenerThread.interrupt();
-        incomingMessageHandler.removeCallbacksAndMessages(null);
+        try {
+            socket.close();
+            listenerThread.interrupt();
+            incomingMessageHandler.removeCallbacksAndMessages(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public final void SendMessage(int text, int progress)
@@ -68,7 +75,7 @@ public class GruntSocket implements GameSocket {
         msg.sendToTarget();
     }
 
-    public final void SendMessage(AuthPacket packet)
+    public final void SendMessage(GruntPacket packet)
     {
         Message msg = _interface.obtainMessage();
         msg.obj = packet;
@@ -107,10 +114,10 @@ public class GruntSocket implements GameSocket {
 
     }
 
-    public AuthPacket SendAuthChallenge()
+    public GruntPacket SendAuthChallenge()
     {
         // Size can be approximate as long as it is larger than final packet size
-        AuthPacket challenge = new AuthPacket(AuthOpcodes.LOGON_CHALLENGE, G.Username.length() + 50);
+        GruntPacket challenge = new GruntPacket(AuthOpcodes.LOGON_CHALLENGE, G.Username.length() + 50);
         challenge.WriteByte((byte)0x00); // LOGON_CHALLENGE
         challenge.WriteByte((byte)8); // Error
         challenge.WriteByte((byte)(G.Username.length() + 30)); // Size
@@ -130,7 +137,7 @@ public class GruntSocket implements GameSocket {
 
     public void SendAuthProof(byte[] A, byte[] M1, byte[] CRC)
     {
-        AuthPacket proof = new AuthPacket(AuthOpcodes.LOGON_PROOF, 32 + 20 + 20 + 3);
+        GruntPacket proof = new GruntPacket(AuthOpcodes.LOGON_PROOF, 32 + 20 + 20 + 3);
         proof.WriteByte((byte)0x01); // LOGON_PROOF
         proof.WriteBytes(A);
         proof.WriteBytes(M1);
@@ -143,14 +150,14 @@ public class GruntSocket implements GameSocket {
 
     public void SendRealmList()
     {
-        AuthPacket realmList = new AuthPacket(AuthOpcodes.REALM_LIST, 5);
+        GruntPacket realmList = new GruntPacket(AuthOpcodes.REALM_LIST, 5);
         realmList.WriteByte((byte)0x10); // REALM_LIST
         realmList.WriteUint32(0);
         SendMessage(R.string.info_auth_progress_realmlist_request, 90);
         SendPacket(realmList);
     }
 
-    public void HandleLogonChallenge(AuthPacket opcode) throws Exception
+    public void HandleLogonChallenge(GruntPacket opcode) throws Exception
     {
         SendMessage(R.string.info_auth_progress_challenge_received, 20);
         opcode.ReadByte(); // Skipped, always 0x00
@@ -264,7 +271,7 @@ public class GruntSocket implements GameSocket {
         SendAuthProof(A.toByteArray(32), M1.toByteArray(20), new byte[20]);
     }
 
-    public void HandleAuthProof(AuthPacket opcode)
+    public void HandleAuthProof(GruntPacket opcode)
     {
         SendMessage(R.string.info_auth_progress_proof_received, 70);
 
@@ -296,7 +303,7 @@ public class GruntSocket implements GameSocket {
             SendMessage(R.string.error_auth_result_proof_mismatch, -1);
     }
 
-    public void HandleRealmlist(AuthPacket opcode)
+    public void HandleRealmlist(GruntPacket opcode)
     {
         SendMessage(R.string.info_auth_progress_realmlist_received, 100);
         SendMessage(opcode);
@@ -304,7 +311,7 @@ public class GruntSocket implements GameSocket {
 
     public void HandleDataBundle(Bundle b)
     {
-        AuthPacket opcode = new AuthPacket(b.getByteArray("AuthPacket"));
+        GruntPacket opcode = new GruntPacket(b.getByteArray("GruntPacket"));
         G.Log("[AuthServer: S->C] Received 0x" + Integer.toString(opcode.GetOpcode(), 16));
         switch (opcode.GetOpcode())
         {
@@ -381,7 +388,7 @@ public class GruntSocket implements GameSocket {
                     byte[] packet = new byte[packetSize];
                     buffer.get(packet);
                     // G.Log("Received " + Arrays.toString(packet));
-                    commandBundle.putByteArray("AuthPacket", packet);
+                    commandBundle.putByteArray("GruntPacket", packet);
 
                     commandMessage.setData(commandBundle);
                     incomingMessageHandler.sendMessage(commandMessage);
@@ -401,12 +408,12 @@ public class GruntSocket implements GameSocket {
             if (_writeQueue.isEmpty())
                 return;
 
-            AuthPacket pkt = _writeQueue.poll();
+            GruntPacket pkt = _writeQueue.poll();
             if (pkt == null || pkt.GetDataSize() == 0)
                 return;
 
             G.Log("[AuthServer: C->S] Sending 0x" + Integer.toString(pkt.GetOpcode(), 16));
-            socket.write(pkt.ToSendableData());
+            socket.write(pkt.ToByteBuffer());
             // We should check if everything is written - but packets are small
             // Come back at it if this is an issue when deployed
         }

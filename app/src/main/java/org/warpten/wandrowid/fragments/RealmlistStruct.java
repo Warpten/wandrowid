@@ -3,7 +3,7 @@ package org.warpten.wandrowid.fragments;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.warpten.wandrowid.network.AuthPacket;
+import org.warpten.wandrowid.network.GruntPacket;
 
 import java.util.ArrayList;
 
@@ -23,11 +23,11 @@ public class RealmlistStruct implements Parcelable {
     @Override
     public int describeContents() { return 0; }
 
-    public RealmlistStruct(AuthPacket opcode) {
+    public RealmlistStruct(GruntPacket opcode) {
         UpdateData(opcode);
     }
 
-    public void UpdateData(AuthPacket opcode) {
+    public void UpdateData(GruntPacket opcode) {
         opcode.ReadUint16(); // pkt.size() + RealmListSizeBuffer.size()
         opcode.ReadUint32(); // Always 0x00
         short realmCount = opcode.ReadUint16(); // Short since 2.x

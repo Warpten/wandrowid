@@ -11,23 +11,23 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Enumeration;
 
-public class AuthPacket {
+public class GruntPacket implements GamePacket {
     private ByteBuffer data;
 
     public int GetOpcode() { return data.get(0); }
     public int GetDataSize() { return data.limit(); }
 
     /*
-     * Constructs a new AuthPacket.
+     * Constructs a new GruntPacket.
      */
-    public AuthPacket(AuthOpcodes opcode, int size)
+    public GruntPacket(AuthOpcodes opcode, int size)
     {
         data = ByteBuffer.allocate(size);
         data.order(ByteOrder.LITTLE_ENDIAN);
     }
 
     // This is for server opcodes
-    public AuthPacket(ByteBuffer buffer)
+    public GruntPacket(ByteBuffer buffer)
     {
         data = buffer.duplicate();
         data.order(ByteOrder.LITTLE_ENDIAN);
@@ -35,7 +35,7 @@ public class AuthPacket {
         data.get();
     }
 
-    public AuthPacket(byte[] bdata)
+    public GruntPacket(byte[] bdata)
     {
         data = ByteBuffer.wrap(bdata);
         data.order(ByteOrder.LITTLE_ENDIAN);
@@ -155,7 +155,7 @@ public class AuthPacket {
     /**
      * NOTE: This function can only be used if you are DONE with writing your packet!
      */
-    public ByteBuffer ToSendableData()
+    public ByteBuffer ToByteBuffer()
     {
         ByteBuffer copy = data.duplicate();
         copy.order(ByteOrder.LITTLE_ENDIAN);

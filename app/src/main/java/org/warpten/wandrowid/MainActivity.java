@@ -27,7 +27,7 @@ import org.warpten.wandrowid.fragments.ChatMessageType;
 import org.warpten.wandrowid.fragments.ChatPagerFragment;
 import org.warpten.wandrowid.fragments.RealmlistFragment;
 import org.warpten.wandrowid.fragments.SettingsFragment;
-import org.warpten.wandrowid.network.AuthPacket;
+import org.warpten.wandrowid.network.GruntPacket;
 
 public class MainActivity extends FragmentActivity implements OnAuthFragmentListener, OnCharEnumFragmentListener {
     // Current fragment on screen
@@ -46,7 +46,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
                 {
                     RealmlistFragment fragment = (RealmlistFragment)getSupportFragmentManager()
                         .findFragmentById(R.id.fragment_realm_selector);
-                    AuthPacket realmPacket = (AuthPacket) msg.obj;
+                    GruntPacket realmPacket = (GruntPacket) msg.obj;
                     if (fragment != null) { // Updating display
                         fragment.UpdateData(realmPacket);
                     } else {
@@ -204,7 +204,7 @@ public class MainActivity extends FragmentActivity implements OnAuthFragmentList
 
     public void OnRealmListRefreshRequest(View view)
     {
-        G.Socket.SendRealmList();
+        G.GruntSocket().SendRealmList();
     }
 
     public void MakeToast(int msg, boolean shortToast)

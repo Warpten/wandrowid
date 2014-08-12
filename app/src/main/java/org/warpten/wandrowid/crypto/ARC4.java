@@ -98,7 +98,7 @@ public class ARC4 {
     }
 
     /**
-     * Called by WorldSocket::ToSendableData().
+     * Called by WorldSocket::ToByteBuffer().
      * @param opcode opcode ID
      * @param pkt    opcode content
      * @param enableAfterBuild Activate ARC4 AFTER packet is sent

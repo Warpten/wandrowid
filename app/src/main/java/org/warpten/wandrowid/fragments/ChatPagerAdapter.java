@@ -43,6 +43,7 @@ public class ChatPagerAdapter extends ArrayPagerAdapter<ChatWindowFragment> {
         //! Code duplicated for simplicity of brain processing!
         for (int i = 0; i < getCount(); ++i) {
             ChatWindowFragment fragment = getExistingFragment(i);
+            /* TODO: This is crashy, figure out why */
             switch (fragment.MessageType)
             {
                 // Also contains WHISPER_INFORM (basically server sending back OUR message)

@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import org.warpten.wandrowid.OnAuthFragmentListener;
 import org.warpten.wandrowid.R;
-import org.warpten.wandrowid.network.AuthPacket;
+import org.warpten.wandrowid.network.GruntPacket;
 
 
 /**
@@ -37,11 +37,11 @@ public class RealmlistFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param realmInfos An instance of AuthPacket.
+     * @param realmInfos An instance of GruntPacket.
      * @return A new instance of fragment RealmlistFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RealmlistFragment newInstance(AuthPacket realmInfos) {
+    public static RealmlistFragment newInstance(GruntPacket realmInfos) {
         RealmlistFragment fragment = new RealmlistFragment();
 
         Bundle args = new Bundle();
@@ -106,7 +106,7 @@ public class RealmlistFragment extends Fragment {
      * Updates the realm data and informs the ListView that its data set has changed.
      * @param packet The Realmlist packet.
      */
-    public void UpdateData(AuthPacket packet)
+    public void UpdateData(GruntPacket packet)
     {
         adapter.UpdateData(packet);
         ((BaseAdapter)realmListView.getAdapter()).notifyDataSetChanged();

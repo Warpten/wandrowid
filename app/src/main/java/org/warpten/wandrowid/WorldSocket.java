@@ -10,6 +10,8 @@ import org.warpten.wandrowid.crypto.ARC4;
 import org.warpten.wandrowid.handlers.Handlers;
 import org.warpten.wandrowid.handlers.cataclysm.CataclysmHandlers;
 import org.warpten.wandrowid.handlers.wotlk.WoTLKHandlers;
+import org.warpten.wandrowid.network.GamePacket;
+import org.warpten.wandrowid.network.GameSocket;
 import org.warpten.wandrowid.network.WorldPacket;
 
 import java.io.IOException;
@@ -39,9 +41,9 @@ public class WorldSocket implements GameSocket {
 
     private volatile Queue<WorldPacket> _sendQueue;
 
-    public void SendPacket(WorldPacket sendData)
+    public void SendPacket(GamePacket sendData)
     {
-        _sendQueue.add(sendData);
+        _sendQueue.add((WorldPacket)sendData);
     }
 
     // private ServiceCommunicator serviceComm = new ServiceCommunicator();
@@ -219,7 +221,7 @@ public class WorldSocket implements GameSocket {
                 try {
                     PacketLogger.LogPacket(packet, PacketLogger.CLIENT_TO_SERVER);
                     // TODO: Deflate packets if needed, before ARC4'ing
-                    ByteBuffer data = packet.ToSendableData();
+                    ByteBuffer data = packet.ToByteBuffer();
                     while (data.remaining() > 0)
                         socket.write(data);
 

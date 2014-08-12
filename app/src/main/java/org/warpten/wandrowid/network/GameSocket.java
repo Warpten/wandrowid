@@ -1,4 +1,4 @@
-package org.warpten.wandrowid;
+package org.warpten.wandrowid.network;
 
 /**
  * An abstract interface solely used for code purpose.
@@ -9,5 +9,6 @@ public interface GameSocket {
 
     // TODO: Remove this one, so WorldSocket doesn't have to inherit it.
     // TODO: Make a generic SendPacket(WorldPacket) exposed.
-    public void SendRealmList();
+    // public void SendRealmList();
+    public void SendPacket(GamePacket packet);
 }

@@ -7,6 +7,8 @@ import android.util.Log;
 
 import org.warpten.wandrowid.crypto.BigNumber;
 import org.warpten.wandrowid.fragments.CharEnumStruct;
+import org.warpten.wandrowid.network.GameSocket;
+import org.warpten.wandrowid.network.battlenet.BattlenetSocket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +34,10 @@ public class G {
         return Preferences.getString(key, "");
     }
 
-    public static GameSocket      Socket;
-    public static WorldSocket     WorldSocket() { return (WorldSocket)Socket; }
-    public static GruntSocket     GruntSocket() { return (GruntSocket)Socket; }
+    public static GameSocket Socket;
+    public static WorldSocket     WorldSocket()     { return (WorldSocket)Socket; }
+    public static GruntSocket     GruntSocket()     { return (GruntSocket)Socket; }
+    public static BattlenetSocket BattlenetSocket() { return (BattlenetSocket)Socket; }
 
     public static boolean IsWoTLK = false;
     public static boolean IsCataclysm = false;

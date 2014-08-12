@@ -10,10 +10,7 @@ import org.warpten.wandrowid.handlers.cataclysm.Opcodes;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
- * this.data does not contain the opcode!
- */
-public class WorldPacket {
+public class WorldPacket implements GamePacket {
     private ByteBuffer data;
     private short opcode;
     private int _bitPos = 8;
@@ -44,9 +41,8 @@ public class WorldPacket {
 
     /**
      * NOTE: This function can only be used if you are DONE with writing your packet!
-     * NOTE: DOES NOT ENCRYPT
      */
-    public final ByteBuffer ToSendableData()
+    public final ByteBuffer ToByteBuffer()
     {
         FlushBits();
         return ARC4.EncryptPacket(GetOpcode(), data, ForceCryptoInit);
