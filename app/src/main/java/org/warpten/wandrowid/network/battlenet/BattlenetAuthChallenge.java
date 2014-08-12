@@ -40,6 +40,7 @@ public final class BattlenetAuthChallenge extends BattlenetClientPacket {
             return false;
 
         socket.SendPacket(this);
+        return true;
     }
 
     public String ToString() {
